@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscando Vagas...</title>
+    <style>
+        /* Estilos gerais da página */
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Mudado para alinhar melhor ao topo */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Imagem de perfil redonda MAIOR e no TOPO */
+        .profile-img {
+            position: absolute;
+            top: 40px; 
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #333;
+        }
+
+        /* Container principal para centralizar o restante do conteúdo */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 190px; /* Ajustado para subir o Pikachu logo abaixo da foto */
+        }
+
+        /* Quadrado do GIF */
+        .gif-container {
+            width: 300px;
+            height: 300px;
+            background-color: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Texto abaixo do Pikachu */
+        .pikachu-text {
+            font-size: 14px;
+            color: white; /* Cor verde */
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        /* Frases de status */
+        .status-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #FFD700; /* Cor amarela */
+            min-height: 54px;
+            margin-bottom: 15px;
+            max-width: 400px;
+            line-height: 1.4;
+        }
+
+        /* Barra de progresso */
+        .progress-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #333;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 25px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            transition: width 0.1s linear;
+        }
+
+        .progress-pct {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        /* Destaque final */
+        .success-text {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="sua-foto-de-perfil.jpg" alt="Foto de Perfil" class="profile-img">
+
+    <div class="main-content">
+        
+        <div class="gif-container">
+            <img src="pikachu.gif" alt="Pikachu da sorte">
+        </div>
+
+        <div class="pikachu-text">
+            OBS: um pikachu tomando ketchup pra te dar boa sorte =)
+        </div>
+
+        <div class="status-text" id="status-text">
+            Iniciando busca no sistema...
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="progress-pct" id="progress-pct">0%</div>
+
+    </div>
+
+    <script>
+        // Configurações de tempo e URL
+        const tempoTotalMs = 25000; // Alterado para 25 segundos
+        const urlDestino = "https://SEU-LINK-DE-VENDAS-AQUI.com"; // COLOQUE SUA URL AQUI
+        
+        const barra = document.getElementById('progress-bar');
+        const textoPorcentagem = document.getElementById('progress-pct');
+        const textoStatus = document.getElementById('status-text');
+
+        let progresso = 0;
+        const intervaloMs = 50; 
+        const incremento = 100 / (tempoTotalMs / intervaloMs);
+
+        const animacao = setInterval(() => {
+            progresso += incremento;
+            
+            if (progresso >= 100) {
+                progresso = 100;
+                clearInterval(animacao);
+                
+                textoStatus.innerHTML = "<span class='success-text'>Pacote encontrado! Redirecionando...</span>";
+                barra.style.width = '100%';
+                textoPorcentagem.innerText = '100%';
+                
+                setTimeout(() => {
+                    window.location.href = urlDestino;
+                }, 4000); 
+                return;
+            }
+
+            barra.style.width = progresso + '%';
+            textoPorcentagem.innerText = Math.floor(progresso) + '%';
+
+            if (progresso < 35) {
+                textoStatus.innerText = "Verificando se a agenda do Rafael ainda tem vagas para esse mês...";
+            } else if (progresso >= 35 && progresso < 75) {
+                textoStatus.innerText = "Buscando pacotes ainda disponíveis...";
+            } else if (progresso >= 75 && progresso < 100) {
+                textoStatus.innerText = "Buscando o melhor pacote com base nas suas respostas...";
+            }
+
+        }, intervaloMs);
+    </script>
+
+</body>
+</html>
